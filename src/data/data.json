@@ -1,0 +1,17 @@
+{
+    "1": {
+      "title": "Pierwszy tytuł",
+      "text": "To jest pierwszy tekst",
+      "image": "/images/first.png"
+    },
+    "2": {
+      "title": "Drugi tytuł",
+      "text": "To jest drugi tekst",
+      "image": "/images/second.png"
+    },
+    "3": {
+        "title": "Trzeci tytuł",
+        "text": "To jest trzeci tekst",
+        "image": "/images/third.png"
+    }
+  }  
