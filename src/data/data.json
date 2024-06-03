@@ -1,23 +1,20 @@
 {
-  "1": {
-    "title": "Pierwszy tytuł",
-    "text": "To jest pierwszy tekst",
-    "image": "/images/first.png",
+  "mikolaj-rembikowski": {
+    "date": "01/06/2024",
+    "range": ["Double diamond", "App Design"],
     "name": "Mikolaj Rembikowski",
-    "programText": "Ukonczyl/a miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
+    "programText": "Ukonczyl miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
   },
-  "2": {
-    "title": "Drugi tytuł",
-    "text": "To jest drugi tekst",
-    "image": "/images/second.png",
+  "anna-nowak": {
+    "date": "02/06/2024",
+    "range": ["React-Native", "REST API"],
     "name": "Anna Nowak",
-    "programText": "Ukonczyl/a miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
+    "programText": "Ukonczyla miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
   },
-  "3": {
-    "title": "Trzeci tytuł",
-    "text": "To jest trzeci tekst",
-    "image": "/images/third.png",
+  "jan-adamski": {
+    "date": "03/06/2024",
+    "range": ["Automatic tests", "Manual testing"],
     "name": "Jan Adamski",
-    "programText": "Ukonczyl/a miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
+    "programText": "Ukonczyl miesieczny program stazowy\nUX/UI w Software Housie Sysmo.pl"
   }
 }

@@ -1,15 +1,17 @@
+import React from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import fs from 'fs';
 import path from 'path';
-import React from 'react';
-import html2canvas from 'html2canvas';
+import Iframe from 'react-iframe';
 import jsPDF from 'jspdf';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faInstagram, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 interface Data {
-  title: string;
-  text: string;
-  image: string;
+  date: string;
+  range: string[];
   name: string;
   programText: string;
 }
@@ -23,115 +25,133 @@ const Page = ({ data }: Props) => {
   const { id } = router.query;
 
   const generatePDF = () => {
-    const input = document.getElementById('content')!;
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('landscape', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      pdf.setFillColor('#161616');
-      pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
-  
-      const borderWidth = 6;
-      pdf.setDrawColor('#FFFFFF');
-      pdf.setLineWidth(borderWidth);
-      pdf.rect(0, 0, pdfWidth, pdfHeight);
-      
-      const logo3Width = 30;
-      const logo3Height = 25;
-      const logo3X = (pdfWidth - logo3Width) / 2;
-      const logo3Y = borderWidth + 5;
-      pdf.addImage('/logo3.png', 'PNG', logo3X, logo3Y, logo3Width, logo3Height);
-  
-      const logo4Width = 155;
-      const logo4Height = 30;
-      const logo4X = (pdfWidth - logo4Width) / 2;
-      const logo4Y = logo3Height + 20;
-      pdf.addImage('/logo4.png', 'PNG', logo4X, logo4Y, logo4Width, logo4Height);
-  
-      pdf.setFontSize(23);
-      pdf.setTextColor('#FFFFFF');
-      pdf.text('ukonczenia programu stazowego', pdfWidth / 2, logo4Y + logo4Height + 10, { align: 'center' });
+    const pdf = new jsPDF('landscape', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      pdf.setFontSize(14);
-      const poswiadczaY = logo4Y + logo4Height + 40;
-      pdf.text('POSWIADCZA, ZE', pdfWidth / 2, poswiadczaY, { align: 'center' });
+    pdf.setFillColor('#161616');
+    pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
 
-      const nameY = poswiadczaY + 15;
-      pdf.setFontSize(38);
-      pdf.text(data.name.toUpperCase(), pdfWidth / 2, nameY, { align: 'center' });
+    const logo3 = '/logo3.png';
+    const logo4 = '/logo4.png';
+    const logo2 = '/logo2.png';
 
-      const programTextY = nameY + 10;
-      pdf.setFontSize(15);
-      pdf.setTextColor('#a8a8a8');
-      pdf.text(data.programText, pdfWidth / 2, programTextY, { align: 'center' });
+    const logo3Width = 35;
+    const logo3Height = 30;
+    const logo3X = 10;
+    const logo3Y = 0;
+    pdf.addImage(logo3, 'PNG', logo3X, logo3Y, logo3Width, logo3Height);
 
-      const logoWidth = 50;
-      const logoHeight = 10;
-      const logoX = 20;
-      const logoY = pdf.internal.pageSize.getHeight() - 30;
-      pdf.addImage('/logo2.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
+    const logo4Width = 190;
+    const logo4Height = 40;
+    const logo4X = (pdfWidth - logo4Width) / 2;
+    const logo4Y = logo3Y + logo3Height + 10;
+    pdf.addImage(logo4, 'PNG', logo4X, logo4Y, logo4Width, logo4Height);
 
-      pdf.setFontSize(18);
+    pdf.setTextColor('#FFFFFF');
+    pdf.setFontSize(28);
+    pdf.text('ukonczenia programu stazowego', pdfWidth / 2, logo4Y + logo4Height + 10, { align: 'center' });
 
-      pdf.setTextColor('#FFFFFF');
-      pdf.setFont('times', 'italic');
-      pdf.text('Kajetan Zimniak', pdfWidth / 2, logoY + 10, { align: 'center' });
+    pdf.setFontSize(16);
+    pdf.text('POSWIADCZA, ZE', pdfWidth / 2, logo4Y + logo4Height + 35, { align: 'center' });
 
-      pdf.setTextColor('#a8a8a8');
-      pdf.setFont('times', 'italic');
-      pdf.text('CEO', pdfWidth / 2, logoY + 20, { align: 'center' });
+    pdf.setFontSize(38);
+    pdf.text(data.name.toUpperCase(), pdfWidth / 2, logo4Y + logo4Height + 50, { align: 'center' });
 
-      pdf.setFontSize(20);
-      pdf.setFont('times', 'normal');
-      pdf.text('01/06/2024', pdfWidth - 40, logoY + 10);
+    pdf.setFontSize(17);
+    pdf.setTextColor('#a8a8a8');
+    pdf.text(data.programText, pdfWidth / 2, logo4Y + logo4Height + 60, { align: 'center' });
 
-      pdf.save(`${id}.pdf`);
-    });
+    pdf.setFontSize(18);
+    pdf.setTextColor('#FFFFFF');
+    pdf.setFont('times', 'italic');
+    const signatureY = pdfHeight - 25;
+    pdf.text('Kajetan Zimniak', pdfWidth / 2, signatureY, { align: 'center' });
+
+    pdf.setTextColor('#a8a8a8');
+    const ceoY = signatureY + 10;
+    pdf.text('CEO', pdfWidth / 2, ceoY, { align: 'center' });
+
+    const logoWidth = 50;
+    const logoHeight = 10;
+    const logoX = 20;
+    const logoY = pdfHeight - 30;
+    pdf.addImage(logo2, 'PNG', logoX, logoY, logoWidth, logoHeight);
+
+    pdf.setFontSize(21);
+    pdf.setFont('times', 'normal');
+    pdf.setTextColor('#FFFFFF');
+    pdf.text(data.date, pdfWidth - 40, pdfHeight - 20);
+
+    pdf.save(`${id}.pdf`);
   };
 
-  return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
-      <img src="/logo.png" alt="logo" style={{ position: 'absolute', top: '20px', left: '20px', width: '100px', height: 'auto' }} />
-      <div id="content" style={{ padding: '20px', textAlign: 'center' }}>
-        <h1>{data.title}</h1>
-        <p>{data.text}</p>
-        <img src={data.image} alt={data.title} style={{ width: '100%', height: 'auto' }} />
-        <button onClick={generatePDF} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}>
-          Pobierz PDF
-        </button>
-      </div>
+  const iframeUrl = `/html_css.html?date=${encodeURIComponent(data.date)}&name=${encodeURIComponent(data.name)}&programText=${encodeURIComponent(data.programText)}`;
 
-      <footer style={{ backgroundColor: '#111111', color: 'white', padding: '40px 10%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <div className="column">
-          <img src="/logo2.png" alt="logo 2" />
-          <p style={{ fontSize: '21px', color: '#e0e0e0', lineHeight: 1.35, fontWeight: 500 }}>
-            Sysmo.pl – rozwiązania IT sp.z o.o.<br />
-            NIP: 7822889486<br />
-            REGON: 387542528<br />
-            KRS: 0000870256
-          </p>  
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="container" style={{ backgroundColor: '#f7f7f7', flex: '1', overflow: 'hidden' }}>
+        <div className="column" style={{ padding: '40px' }}>
+          <Iframe
+            url={iframeUrl}
+            width="100%"
+            height="900px"
+            id="myId"
+            display="initial"
+            position="relative"
+            allowFullScreen
+          />
         </div>
-        <div className="column">
-          <h3>Mapa strony</h3>
-          <p><a href="https://sysmo.pl/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Home</a></p>
-          <p><a href="https://sysmo.pl/uslugi/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Usługi</a></p>
-          <p><a href="https://sysmo.pl/realizacje/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Realizacje</a></p>
-          <p><a href="https://sysmo.pl/o-nas/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>O nas</a></p>
-          <p><a href="https://sysmo.pl/artykuly/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Artykuły</a></p>
-          <p><a href="https://sysmo.pl/faq/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>FAQ</a></p>
-          <p><a href="https://zleca.pl/wykonawca/sysmo-aplikacje-mobilne-i-webowe-1601013554-1601006354" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Zleca.pl</a></p>
-          <p><a href="https://sysmo.pl/kariera/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Kariera</a></p>
-          <p><a href="https://sysmo.pl/kontakt/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Kontakt</a></p>
+        <div className="column" style={{ backgroundColor: '#f7f7f7', padding: '40px' }}>
+          <h1>Zdobyte umiejętności</h1>
+          <ul style={{ marginTop: '30px', padding: '0', listStyle: 'none', width: 'fit-content', textAlign: 'center', marginBottom: '30px' }}>
+            {data.range.map((skill, index) => (
+              <li key={index} style={{ padding: '5px 40px', fontSize: '26px', borderRadius: '50px', border: '2px solid black', backgroundColor: 'transparent', cursor: 'pointer', margin: '0 auto 20px' }}>
+                {skill}
+              </li>
+            ))}
+          </ul>
+          <h1>Wystawiono dnia:</h1>
+          <p style={{ color: '#454545', fontSize: '23px', fontWeight: 'bold', width: '100%' }}>{data.date}</p>
+          <button onClick={generatePDF} style={{ marginTop: '20px', padding: '11px 48px', fontSize: '26px', borderRadius: '50px', backgroundColor: 'black', color: 'white', border: 'none', cursor: 'pointer', display: 'block' }}>
+            Pobierz certyfikat
+          </button>
         </div>
-        <div className="column">
-          <h3>Kontakt</h3>
-          <p><a href="mailto:contact@sysmo.pl" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>contact@sysmo.pl</a></p>
-          <p><a href="tel:+48736036604" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>+48 736 036 604</a></p>
-          <p><a href="https://sysmo.pl/kontakt/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Sysmo.pl – rozwiązania IT sp. z o.o.</a></p><br />
-          <p><a href="https://www.linkedin.com/company/sysmo-pl-rozwi-zania-it-sp-z-o-o" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Linkedin</a></p>
-          <p><a href="https://www.facebook.com/sysmo.rozwiazania.it/" style={{ color: '#b8bcbd', textDecoration: 'none', fontSize: '21px' }}>Facebook</a></p>
+      </div>
+      <footer style={{ backgroundColor: '#111111', color: 'white', padding: '40px 5%', width: '90%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+          <div>
+            <img src="/logo2.png" alt="logo2" style={{ width: '100%', height: '60px' }} />
+            <p style={{ fontSize: '17px', color: '#b9bcbd', lineHeight: 1.75 }}>
+              Sysmo.pl – rozwiązania IT sp.z o.o.<br /><br />
+              NIP: 7822889486<br />
+              REGON: 387542528<br />
+              KRS: 0000870256
+            </p>
+          </div>
+          <div>
+            <h1>Kontakt</h1>
+            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+              <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '10px' }} />
+              contact@sysmo.pl
+            </p>
+            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+              <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />
+              736 036 604
+            </p>
+            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+              <FontAwesomeIcon icon={faGlobe} style={{ marginRight: '10px' }} />
+              Sysmo.pl 
+            </p>
+          </div>
+          <div>
+            <h1>Obserwuj nas</h1>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <FontAwesomeIcon icon={faFacebook} style={{ color: '#b8bcbd', marginRight: '20px' }} />
+              <FontAwesomeIcon icon={faInstagram} style={{ color: '#b8bcbd', marginRight: '20px' }} />
+              <FontAwesomeIcon icon={faLinkedin} style={{ color: '#b8bcbd', marginRight: '20px' }} />
+            </div>
+          </div>
         </div>
       </footer>
     </div>

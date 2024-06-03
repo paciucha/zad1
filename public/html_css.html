@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certyfikat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #161616;
+      font-family: 'Montserrat';
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo-top {
+      position: absolute;
+      top: 0;
+      left: 15%;
+      transform: translateX(-50%);
+    }
+
+    .logo-top img {
+      width: 105px;
+      height: 100px;
+    }
+
+    .main-logo {
+      margin-top: 170px;
+    }
+
+    .main-logo img {
+      width: 710px;
+      height: 150px;
+    }
+
+    .text {
+      font-size: 37px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .sub-text {
+      font-size: 24px;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .name {
+      font-size: 58px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .program-text {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 10px;
+      color: #a8a8a8;
+    }
+
+    .signature {
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 21px;
+    }
+
+    .footer .left {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .footer .right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 25px;
+    }
+
+    .footer img {
+      width: 200px;
+      height: auto;
+    }
+
+    .footer .center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-top">
+      <img src="logo3.png" alt="logo3">
+    </div>
+    <div class="main-logo">
+      <img src="logo4.png" alt="logo4">
+    </div>
+    <div class="text">ukonczenia programu stazowego</div>
+    <div class="sub-text">POSWIADCZA, ZE</div>
+    <div class="name">IMIE I NAZWISKO</div>
+    <div class="program-text">Ukonczyl/a miesieczny program stazowy<br>UX/UI w Software Housie Sysmo.pl</div>
+  </div>
+  <div class="footer">
+    <div class="left">
+      <img src="logo2.png" alt="logo2">
+    </div>
+    <div class="center">
+      <i>Kajetan Zimniak<br><span style="color: #a8a8a8">CEO</span></i>
+    </div>
+    <div class="right">
+      01/06/2024
+    </div>
+  </div>
+  <script>
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        date: params.get('date'),
+        name: params.get('name').toUpperCase(),
+        programText: params.get('programText')
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = getQueryParams();
+      document.querySelector('.name').textContent = params.name;
+      document.querySelector('.program-text').innerHTML = params.programText.replace('\n', '<br>');
+      document.querySelector('.footer .right').textContent = params.date;
+    });
+</script>
+</body>
+</html>
