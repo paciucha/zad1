@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import Iframe from 'react-iframe';
 import jsPDF from 'jspdf';
+import Head from 'next/head';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
@@ -50,10 +51,10 @@ const Page = ({ data }: Props) => {
 
     pdf.setTextColor('#FFFFFF');
     pdf.setFontSize(28);
-    pdf.text('ukonczenia programu stazowego', pdfWidth / 2, logo4Y + logo4Height + 10, { align: 'center' });
+    pdf.text('ukończenia programu stażowego', pdfWidth / 2, logo4Y + logo4Height + 10, { align: 'center' });
 
     pdf.setFontSize(16);
-    pdf.text('POSWIADCZA, ZE', pdfWidth / 2, logo4Y + logo4Height + 35, { align: 'center' });
+    pdf.text('POŚWIADCZA, ŻE', pdfWidth / 2, logo4Y + logo4Height + 35, { align: 'center' });
 
     pdf.setFontSize(38);
     pdf.text(data.name.toUpperCase(), pdfWidth / 2, logo4Y + logo4Height + 50, { align: 'center' });
@@ -79,7 +80,6 @@ const Page = ({ data }: Props) => {
     pdf.addImage(logo2, 'PNG', logoX, logoY, logoWidth, logoHeight);
 
     pdf.setFontSize(21);
-    pdf.setFont('times', 'normal');
     pdf.setTextColor('#FFFFFF');
     pdf.text(data.date, pdfWidth - 40, pdfHeight - 20);
 
@@ -89,12 +89,15 @@ const Page = ({ data }: Props) => {
   const iframeUrl = `/html_css.html?date=${encodeURIComponent(data.date)}&name=${encodeURIComponent(data.name)}&programText=${encodeURIComponent(data.programText)}`;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <div className="container" style={{ backgroundColor: '#f7f7f7', flex: '1', overflow: 'hidden' }}>
-        <div className="column" style={{ padding: '40px' }}>
+    <>
+      <Head>
+        <title>Sysmo.pl - rozwiązania IT | Internship program</title>
+      </Head>
+      <div className="container">
+        <div className="main-content">
           <Iframe
             url={iframeUrl}
-            width="100%"
+            width="85%"
             height="900px"
             id="myId"
             display="initial"
@@ -102,7 +105,7 @@ const Page = ({ data }: Props) => {
             allowFullScreen
           />
         </div>
-        <div className="column" style={{ backgroundColor: '#f7f7f7', padding: '40px' }}>
+        <div className="sidebar">
           <h1>Zdobyte umiejętności</h1>
           <ul style={{ marginTop: '30px', padding: '0', listStyle: 'none', width: 'fit-content', textAlign: 'center', marginBottom: '30px' }}>
             {data.range.map((skill, index) => (
@@ -113,48 +116,48 @@ const Page = ({ data }: Props) => {
           </ul>
           <h1>Wystawiono dnia:</h1>
           <p style={{ color: '#454545', fontSize: '23px', fontWeight: 'bold', width: '100%' }}>{data.date}</p>
-          <button onClick={generatePDF} style={{ marginTop: '20px', padding: '11px 48px', fontSize: '26px', borderRadius: '50px', backgroundColor: 'black', color: 'white', border: 'none', cursor: 'pointer', display: 'block' }}>
+          <button onClick={generatePDF} style={{ marginTop: '20px', padding: '12px 45px', fontSize: '26px', borderRadius: '50px', backgroundColor: 'black', color: 'white', border: 'none', cursor: 'pointer', display: 'block' }}>
             Pobierz certyfikat
           </button>
         </div>
       </div>
-      <footer style={{ backgroundColor: '#111111', color: 'white', padding: '40px 5%', width: '90%' }}>
+      <footer>
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
           <div>
-            <img src="/logo2.png" alt="logo2" style={{ width: '100%', height: '60px' }} />
-            <p style={{ fontSize: '17px', color: '#b9bcbd', lineHeight: 1.75 }}>
+            <img src="/logo2.png" alt="logo2" />
+            <p>
               Sysmo.pl – rozwiązania IT sp.z o.o.<br /><br />
               NIP: 7822889486<br />
               REGON: 387542528<br />
               KRS: 0000870256
             </p>
           </div>
-          <div>
+          <div className="contact">
             <h1>Kontakt</h1>
-            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+            <p>
               <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '10px' }} />
               contact@sysmo.pl
             </p>
-            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+            <p>
               <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />
-              736 036 604
+              +48 123 456 789
             </p>
-            <p style={{ color: '#b9bcbd', fontSize: '17px', lineHeight: '1.20' }}>
+            <p>
               <FontAwesomeIcon icon={faGlobe} style={{ marginRight: '10px' }} />
-              Sysmo.pl 
+              www.sysmo.pl
             </p>
           </div>
-          <div>
+          <div className="follow-us">
             <h1>Obserwuj nas</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <FontAwesomeIcon icon={faFacebook} style={{ color: '#b8bcbd', marginRight: '20px' }} />
-              <FontAwesomeIcon icon={faInstagram} style={{ color: '#b8bcbd', marginRight: '20px' }} />
-              <FontAwesomeIcon icon={faLinkedin} style={{ color: '#b8bcbd', marginRight: '20px' }} />
+            <div className="icons">
+              <FontAwesomeIcon icon={faInstagram} className="icon" />
+              <FontAwesomeIcon icon={faFacebook} className="icon" />
+              <FontAwesomeIcon icon={faLinkedin} className="icon" />
             </div>
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 };
 
