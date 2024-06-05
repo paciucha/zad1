@@ -10,8 +10,9 @@
       margin: 0;
       padding: 0;
       background-color: #161616;
-      font-family: 'Montserrat';
+      font-family: 'Montserrat', sans-serif;
       color: white;
+      overflow: hidden;
     }
 
     .container {
@@ -45,39 +46,31 @@
       height: 150px;
     }
 
-    .text {
-      font-size: 37px;
+    .text, .sub-text, .name, .program-text, .signature {
       text-align: center;
-      margin-top: 20px;
+      margin: 2px 0;
+    }
+
+    .text {
+      font-size: 2.5vw;
     }
 
     .sub-text {
-      font-size: 24px;
-      text-align: center;
-      margin-top: 90px;
+      font-size: 1.5vw;
+      margin-top: 9vh;
     }
 
     .name {
-      font-size: 58px;
-      text-align: center;
-      margin-top: 10px;
+      font-size: 4vw;
     }
 
     .program-text {
-      font-size: 20px;
-      text-align: center;
-      margin-top: 10px;
+      font-size: 1.5vw;
       color: #a8a8a8;
     }
 
-    .signature {
-      font-size: 18px;
-      text-align: center;
-      margin-top: 20px;
-    }
-
     .footer {
-      position: fixed;
+      position: absolute;
       bottom: 20px;
       left: 0;
       right: 0;
@@ -85,23 +78,10 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 20px;
-      font-size: 21px;
+      font-size: 1.4vw;
     }
 
-    .footer .left {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-
-    .footer .right {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      font-size: 25px;
-    }
-
-    .footer img {
+    .footer .left img {
       width: 200px;
       height: auto;
     }
@@ -111,6 +91,57 @@
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
+      font-size: 1.5vw;
+    }
+
+    .footer .right {
+      font-size: 2vw;
+    }
+
+    @media (max-width: 768px) {
+      .logo-top img, .footer .left img {
+        width: 50px;
+        height: auto;
+      }
+
+      .main-logo img {
+        width: 150px; 
+        height: auto;
+      }
+
+      .main-logo {
+        margin-top: 60px;
+      }
+
+      .text {
+        font-size: 4vw;
+      }
+
+      .sub-text {
+        font-size: 3vw;
+        margin-top: 5vh;
+      }
+
+      .name {
+        font-size: 6vw;
+      }
+
+      .program-text {
+        font-size: 3vw;
+      }
+
+      .footer {
+        font-size: 4vw;
+        padding: 0 10px;
+      }
+
+      .footer .center {
+        font-size: 3vw;
+      }
+
+      .footer .right {
+        font-size: 3vw;
+      }
     }
   </style>
 </head>
@@ -154,6 +185,6 @@
       document.querySelector('.program-text').innerHTML = params.programText.replace('\n', '<br>');
       document.querySelector('.footer .right').textContent = params.date;
     });
-</script>
+  </script>
 </body>
 </html>
